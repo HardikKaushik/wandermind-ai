@@ -1,12 +1,1 @@
-WanderMind AI — Full-stack travel planner with Django + React
-- Django DRF backend with Groq AI (Llama 3.3 70B) for itinerary generation
-- React + Vite frontend with Tailwind CSS
-- Chat-based itinerary builder with day-by-day planning
-- INR-native budget tracker with live breakdown
-- Hotel & restaurant carousels with booking deep links (MakeMyTrip, Booking.com, Agoda)
-- Flight & train search with price comparison across platforms
-- Interactive Leaflet map with destination markers
-- Full itinerary popup with PDF export, WhatsApp share
-- Fallback dummy data when AI rate-limited
-- Hindi/Hinglish language support
-- White/blue/black theme with emoji-based icons
+
