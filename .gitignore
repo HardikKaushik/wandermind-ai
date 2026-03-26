@@ -1,0 +1,35 @@
+# Environment & secrets
+.env
+.env.local
+.env.production
+wandermind-backend/.env
+wandermind-frontend/.env
+
+# Caches
+wandermind-backend/.image_cache/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+venv/
+.venv/
+db.sqlite3
+
+# Node
+node_modules/
+wandermind-frontend/node_modules/
+wandermind-frontend/dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Claude
+.claude/
