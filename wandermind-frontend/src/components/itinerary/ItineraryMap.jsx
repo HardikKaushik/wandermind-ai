@@ -418,8 +418,8 @@ export default function ItineraryMap({ itinerary, activeDay, onSelectDay }) {
         </div>
       )}
 
-      {/* Legend - top left */}
-      <div className="absolute top-3 left-3 z-[1000] bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden" style={{ maxWidth: 220 }}>
+      {/* Legend - top left on desktop, bottom left on mobile */}
+      <div className="absolute top-3 left-3 z-[400] bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden hidden sm:block" style={{ maxWidth: 220 }}>
         <div className="px-3 py-2 bg-gray-50 border-b border-gray-200">
           <p className="text-xs font-extrabold text-gray-900 uppercase tracking-wider">📍 Places by Day</p>
         </div>
@@ -452,7 +452,7 @@ export default function ItineraryMap({ itinerary, activeDay, onSelectDay }) {
       </div>
 
       {/* Stats bar - bottom left */}
-      <div className="absolute bottom-3 left-3 z-[1000] flex items-center gap-2">
+      <div className="absolute bottom-3 left-3 z-[400] flex items-center gap-2">
         <div className="bg-white rounded-lg border border-gray-200 shadow px-3 py-2 flex items-center gap-2">
           <MapPin size={14} className="text-blue-600" />
           <span className="text-xs font-bold text-gray-900">{markers.length} places</span>
