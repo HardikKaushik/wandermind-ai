@@ -9,50 +9,68 @@ export function useChat() {
   const { addMessage, setTyping } = useChatStore()
   const { sessionId, setSessionId, setTripId, setItinerary, language } = useTripStore()
   const demoMode = useRef(false)
+  const sessionReady = useRef(false)
+  const sessionPromise = useRef(null)
 
   const startSession = useCallback(async (initialData = {}) => {
-    try {
-      const res = await chatApi.startSession(initialData)
-      const { session_id, trip_id, welcome_message } = res.data
-      setSessionId(session_id)
-      setTripId(trip_id)
-      addMessage({
-        role: 'assistant',
-        content: welcome_message,
-        timestamp: new Date().toISOString(),
-      })
-      demoMode.current = false
-      return session_id
-    } catch (err) {
-      // Backend unavailable — switch to demo mode
-      console.log('Backend unavailable, switching to demo mode')
-      demoMode.current = true
-      const fakeId = 'demo-' + Date.now()
-      setSessionId(fakeId)
-      setTripId(fakeId)
-      addMessage({
-        role: 'assistant',
-        content:
-          "Namaste! I'm WanderMind, your AI travel concierge. " +
-          "Tell me where you want to go! For example:\n\n" +
-          "- 'Plan a 5-day trip to Bali for 2 people in \u20b980,000 budget'\n" +
-          "- 'Thailand 3 din ka trip \u20b960,000 mein banao'\n" +
-          "- 'Weekend getaway from Mumbai under \u20b915,000'\n\n" +
-          "I'll create a complete itinerary with hotels, activities, " +
-          "food, and transport — all optimized for Indian travelers!",
-        timestamp: new Date().toISOString(),
-      })
-      return fakeId
-    }
+    // Prevent duplicate session starts
+    if (sessionPromise.current) return sessionPromise.current
+
+    sessionPromise.current = (async () => {
+      try {
+        const res = await chatApi.startSession(initialData)
+        const { session_id, trip_id, welcome_message } = res.data
+        setSessionId(session_id)
+        setTripId(trip_id)
+        addMessage({
+          role: 'assistant',
+          content: welcome_message,
+          timestamp: new Date().toISOString(),
+        })
+        demoMode.current = false
+        sessionReady.current = true
+        return session_id
+      } catch (err) {
+        // Backend unavailable — switch to demo mode
+        console.log('Backend unavailable, switching to demo mode')
+        demoMode.current = true
+        const fakeId = 'demo-' + Date.now()
+        setSessionId(fakeId)
+        setTripId(fakeId)
+        addMessage({
+          role: 'assistant',
+          content:
+            "Namaste! I'm WanderMind, your AI travel concierge. " +
+            "Tell me where you want to go! For example:\n\n" +
+            "- 'Plan a 5-day trip to Bali for 2 people in \u20b980,000 budget'\n" +
+            "- 'Thailand 3 din ka trip \u20b960,000 mein banao'\n" +
+            "- 'Weekend getaway from Mumbai under \u20b915,000'\n\n" +
+            "I'll create a complete itinerary with hotels, activities, " +
+            "food, and transport — all optimized for Indian travelers!",
+          timestamp: new Date().toISOString(),
+        })
+        sessionReady.current = true
+        return fakeId
+      }
+    })()
+
+    const result = await sessionPromise.current
+    sessionPromise.current = null
+    return result
   }, [addMessage, setSessionId, setTripId])
 
   const sendMessage = useCallback(async (text) => {
     if (!text.trim()) return
 
-    let currentSessionId = sessionId
-    if (!currentSessionId) {
+    // Ensure session is ready before sending
+    let currentSessionId = useTripStore.getState().sessionId
+    if (!currentSessionId || !sessionReady.current) {
+      setTyping(true)
       currentSessionId = await startSession()
-      if (!currentSessionId) return
+      if (!currentSessionId) {
+        setTyping(false)
+        return
+      }
     }
 
     addMessage({
@@ -105,7 +123,7 @@ export function useChat() {
         // API key not configured — fall back to demo with notice
         console.warn('ANTHROPIC_API_KEY not set, using demo mode')
         demoMode.current = true
-        toast('Using demo mode — set ANTHROPIC_API_KEY in backend .env for live AI', { icon: '⚠️', duration: 5000 })
+        toast('Using demo mode — AI is temporarily rate-limited', { icon: '⚠️', duration: 5000 })
         const demoResult = generateDemoResponse(text)
         addMessage({
           role: 'assistant',
@@ -117,13 +135,36 @@ export function useChat() {
         if (demoResult.itinerary) {
           setItinerary(demoResult.itinerary)
         }
-      } else if (err.response?.data?.error) {
+      } else if (status === 500 && errMsg?.includes('429')) {
+        // Rate limit hit — fall back to demo for this message
+        console.warn('Rate limit hit, using demo mode for this message')
+        demoMode.current = true
+        toast('AI rate-limited — using curated data. Try again later for live AI!', { icon: '⚠️', duration: 5000 })
+        const demoResult = generateDemoResponse(text)
         addMessage({
           role: 'assistant',
-          content: `Sorry, I encountered an error: ${errMsg}`,
+          content: demoResult.message + '\n\n(Note: Generated from curated data as AI is temporarily rate-limited. You can modify this anytime!)',
+          itinerary_snapshot: demoResult.itinerary,
+          change_summary: demoResult.change_summary,
           timestamp: new Date().toISOString(),
         })
-        toast.error(errMsg)
+        if (demoResult.itinerary) {
+          setItinerary(demoResult.itinerary)
+        }
+      } else if (err.response?.data?.error) {
+        // Other API error — try demo fallback instead of showing error
+        demoMode.current = true
+        const demoResult = generateDemoResponse(text)
+        addMessage({
+          role: 'assistant',
+          content: demoResult.message + '\n\n(Note: Generated from curated data as AI is temporarily rate-limited. You can modify this anytime!)',
+          itinerary_snapshot: demoResult.itinerary,
+          change_summary: demoResult.change_summary,
+          timestamp: new Date().toISOString(),
+        })
+        if (demoResult.itinerary) {
+          setItinerary(demoResult.itinerary)
+        }
       } else {
         // Network error or backend down — switch to demo
         demoMode.current = true
