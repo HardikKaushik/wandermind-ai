@@ -11,11 +11,14 @@ const DESTINATIONS = {
 export function generateDemoResponse(userMessage) {
   const msg = userMessage.toLowerCase()
 
-  // Check if it's a modification request
+  // Check if it's a modification request (but NOT a new trip creation with "budget" keyword)
+  const isNewTrip = msg.includes('plan') || msg.includes('trip') || msg.includes('itinerary') || msg.includes('day') || msg.includes('din')
   if (
-    msg.includes('change') || msg.includes('replace') || msg.includes('modify') ||
-    msg.includes('cheaper') || msg.includes('different') || msg.includes('update') ||
-    msg.includes('optimize') || msg.includes('cut') || msg.includes('budget')
+    !isNewTrip && (
+      msg.includes('change') || msg.includes('replace') || msg.includes('modify') ||
+      msg.includes('cheaper') || msg.includes('different') || msg.includes('update') ||
+      msg.includes('optimize') || msg.includes('cut') || msg.includes('budget')
+    )
   ) {
     return {
       message: "I've updated your itinerary based on your request! Check the itinerary panel for the changes.",

@@ -54,6 +54,7 @@ export default function FinalItinerary({ onClose }) {
   const [shareUrl, setShareUrl] = useState(null)
   const [copied, setCopied] = useState(false)
   const [tab, setTab] = useState('itinerary')
+  const [mobileSidebar, setMobileSidebar] = useState(false)
 
   if (!itinerary) return null
 
@@ -118,45 +119,64 @@ export default function FinalItinerary({ onClose }) {
         className="h-full flex flex-col"
       >
         {/* ─── TOP BAR ─── */}
-        <header className="flex items-center justify-between px-6 py-3 border-b border-gray-200 flex-shrink-0">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">🌍</span>
-            <div>
-              <h1 className="font-display text-lg font-bold gradient-text">
+        <header className="flex items-center justify-between px-3 sm:px-6 py-2.5 border-b border-gray-200 flex-shrink-0 gap-2">
+          <div className="flex items-center gap-2 min-w-0">
+            {/* Mobile hamburger for sidebar */}
+            <button
+              onClick={() => setMobileSidebar(!mobileSidebar)}
+              className="md:hidden p-1.5 rounded-lg hover:bg-gray-100 text-gray-700 flex-shrink-0"
+            >
+              <span className="text-lg">☰</span>
+            </button>
+            <span className="text-xl sm:text-2xl flex-shrink-0">🌍</span>
+            <div className="min-w-0">
+              <h1 className="font-display text-sm sm:text-lg font-bold gradient-text truncate">
                 {itinerary.destination}, {itinerary.country}
               </h1>
-              <p className="text-sm text-gray-700">
+              <p className="text-xs sm:text-sm text-gray-700 truncate">
                 {itinerary.total_days} days
                 {itinerary.travel_dates?.start && ` · ${itinerary.travel_dates.start} to ${itinerary.travel_dates.end}`}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <button onClick={handleDownloadPDF} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs bg-blue-600/10 text-blue-600 hover:bg-blue-600/20 transition-colors">
-              <Download size={12} /> PDF
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+            <button onClick={handleDownloadPDF} className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-lg text-xs bg-blue-600/10 text-blue-600 hover:bg-blue-600/20 transition-colors">
+              <Download size={12} /> <span className="hidden sm:inline">PDF</span>
             </button>
-            <button onClick={handleShare} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs bg-green-50 text-green-700 hover:bg-green-100 transition-colors">
+            <button onClick={handleShare} className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs bg-green-50 text-green-700 hover:bg-green-100 transition-colors">
               {copied ? <Check size={12} /> : <Link2 size={12} />}
               {copied ? 'Copied!' : 'Share'}
             </button>
-            <button onClick={handleWhatsApp} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs bg-green-50 text-green-700 hover:bg-green-100 transition-colors">
-              <MessageCircle size={12} /> WhatsApp
+            <button onClick={handleWhatsApp} className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-lg text-xs bg-green-50 text-green-700 hover:bg-green-100 transition-colors">
+              <MessageCircle size={12} /> <span className="hidden sm:inline">WhatsApp</span>
             </button>
-            <button onClick={handleCopy} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs bg-gray-100 text-gray-700 hover:bg-gray-100 transition-colors">
+            <button onClick={handleCopy} className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs bg-gray-100 text-gray-700 hover:bg-gray-100 transition-colors">
               <Copy size={12} />
             </button>
-            <button onClick={onClose} className="p-2 rounded-lg hover:bg-gray-100 text-gray-700 ml-2">
+            <button onClick={onClose} className="p-1.5 sm:p-2 rounded-lg hover:bg-gray-100 text-gray-700">
               <X size={18} />
             </button>
           </div>
         </header>
 
         {/* ─── MAIN CONTENT ─── */}
-        <div id="final-itinerary-content" className="flex-1 flex overflow-hidden" style={{ background: '#FFFFFF', color: '#1E293B' }}>
+        <div id="final-itinerary-content" className="flex-1 flex overflow-hidden relative" style={{ background: '#FFFFFF', color: '#1E293B' }}>
+
+          {/* Mobile sidebar overlay */}
+          {mobileSidebar && (
+            <div className="fixed inset-0 z-[55] bg-black/40 md:hidden" onClick={() => setMobileSidebar(false)} />
+          )}
 
           {/* ── LEFT: Day Selector + Budget ── */}
-          <aside className="w-64 border-r border-gray-200 flex flex-col flex-shrink-0 overflow-y-auto">
+          <aside className={`
+            ${mobileSidebar ? 'translate-x-0' : '-translate-x-full'}
+            md:translate-x-0 transition-transform duration-300
+            fixed md:relative z-[60] md:z-auto
+            w-72 md:w-64 h-full
+            border-r border-gray-200 flex flex-col flex-shrink-0 overflow-y-auto
+            bg-white shadow-2xl md:shadow-none
+          `}>
             {/* Trip summary card */}
             <div className="p-4 border-b border-gray-200">
               <p className="text-sm text-gray-700 mb-2">{itinerary.summary}</p>
@@ -214,7 +234,7 @@ export default function FinalItinerary({ onClose }) {
               {days.map((day) => (
                 <button
                   key={day.day}
-                  onClick={() => { setActiveDay(day.day); setTab('itinerary'); }}
+                  onClick={() => { setActiveDay(day.day); setTab('itinerary'); setMobileSidebar(false); }}
                   className={`w-full text-left px-3 py-2.5 rounded-lg transition-all text-xs ${
                     activeDay === day.day && tab === 'itinerary'
                       ? 'bg-blue-50 border border-blue-200 text-blue-700'
@@ -240,7 +260,7 @@ export default function FinalItinerary({ onClose }) {
               {/* Extra tabs */}
               <div className="pt-3 mt-3 border-t border-gray-200 space-y-1.5">
                 <button
-                  onClick={() => setTab('map')}
+                  onClick={() => { setTab('map'); setMobileSidebar(false); }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all flex items-center gap-2 ${
                     tab === 'map' ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'hover:bg-gray-100 text-gray-700'
                   }`}
@@ -248,7 +268,7 @@ export default function FinalItinerary({ onClose }) {
                   <MapPin size={14} /> Trip Map & Routes
                 </button>
                 <button
-                  onClick={() => setTab('flights')}
+                  onClick={() => { setTab('flights'); setMobileSidebar(false); }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all flex items-center gap-2 ${
                     tab === 'flights' ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'hover:bg-gray-100 text-gray-700'
                   }`}
@@ -256,7 +276,7 @@ export default function FinalItinerary({ onClose }) {
                   ✈️ Search Flights
                 </button>
                 <button
-                  onClick={() => setTab('trains')}
+                  onClick={() => { setTab('trains'); setMobileSidebar(false); }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all flex items-center gap-2 ${
                     tab === 'trains' ? 'bg-green-50 border border-green-200 text-green-700' : 'hover:bg-gray-100 text-gray-700'
                   }`}
@@ -264,7 +284,7 @@ export default function FinalItinerary({ onClose }) {
                   🚂 Search Trains
                 </button>
                 <button
-                  onClick={() => setTab('essentials')}
+                  onClick={() => { setTab('essentials'); setMobileSidebar(false); }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all flex items-center gap-2 ${
                     tab === 'essentials' ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'hover:bg-gray-100 text-gray-700'
                   }`}
@@ -272,7 +292,7 @@ export default function FinalItinerary({ onClose }) {
                   <Globe size={14} /> Travel Essentials
                 </button>
                 <button
-                  onClick={() => setTab('packing')}
+                  onClick={() => { setTab('packing'); setMobileSidebar(false); }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all flex items-center gap-2 ${
                     tab === 'packing' ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'hover:bg-gray-100 text-gray-700'
                   }`}
@@ -340,22 +360,22 @@ export default function FinalItinerary({ onClose }) {
         </div>
 
         {/* ─── BOTTOM BAR ─── */}
-        <footer className="flex items-center justify-between px-6 py-2.5 border-t border-gray-200 flex-shrink-0">
-          <button onClick={onClose} className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm bg-gray-100 text-gray-700 hover:bg-gray-100 transition-colors">
-            <Pencil size={14} /> Continue Editing
+        <footer className="flex items-center justify-between px-3 sm:px-6 py-2 sm:py-2.5 border-t border-gray-200 flex-shrink-0 gap-2">
+          <button onClick={onClose} className="flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors flex-shrink-0">
+            ✏️ <span className="hidden sm:inline">Continue Editing</span><span className="sm:hidden">Edit</span>
           </button>
-          <p className="text-xs text-gray-700">
+          <p className="text-xs text-gray-500 hidden sm:block truncate">
             {shareUrl || 'Created with WanderMind AI'}
           </p>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
             {activeDay > 1 && tab === 'itinerary' && (
-              <button onClick={() => setActiveDay(activeDay - 1)} className="px-3 py-1.5 rounded-lg text-xs bg-gray-100 text-gray-700 hover:bg-gray-100">
-                &larr; Day {activeDay - 1}
+              <button onClick={() => setActiveDay(activeDay - 1)} className="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs bg-gray-100 text-gray-700 hover:bg-gray-200">
+                &larr; <span className="hidden sm:inline">Day </span>{activeDay - 1}
               </button>
             )}
             {activeDay < days.length && tab === 'itinerary' && (
-              <button onClick={() => setActiveDay(activeDay + 1)} className="px-3 py-1.5 rounded-lg text-xs bg-blue-50 text-blue-600 hover:bg-blue-600/25">
-                Day {activeDay + 1} &rarr;
+              <button onClick={() => setActiveDay(activeDay + 1)} className="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs bg-blue-50 text-blue-600 hover:bg-blue-100">
+                <span className="hidden sm:inline">Day </span>{activeDay + 1} &rarr;
               </button>
             )}
           </div>
@@ -371,7 +391,7 @@ function HotelCarouselCard({ hotel, isRecommended, onClick, isActive }) {
   return (
     <button
       onClick={onClick}
-      className={`flex-shrink-0 w-52 rounded-xl border overflow-hidden text-left transition-all hover:scale-[1.02] ${
+      className={`flex-shrink-0 w-40 sm:w-52 rounded-xl border overflow-hidden text-left transition-all hover:scale-[1.02] ${
         isActive
           ? 'border-blue-600/50 bg-blue-600/10 ring-1 ring-blue-600/30'
           : 'border-white/8 bg-white/[0.03] hover:border-white/15'
@@ -431,15 +451,15 @@ function HotelExpandedDetail({ hotel, destination }) {
       transition={{ duration: 0.25 }}
       className="overflow-hidden"
     >
-      <div className="rounded-xl border border-blue-600/20 bg-blue-600/5 p-5 space-y-4">
-        <div className="flex gap-4">
+      <div className="rounded-xl border border-blue-600/20 bg-blue-600/5 p-3 sm:p-5 space-y-3 sm:space-y-4">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           {hotel.photo_url && (
-            <img src={hotel.photo_url} alt={hotel.name} className="w-56 h-40 object-cover rounded-lg flex-shrink-0" />
+            <img src={hotel.photo_url} alt={hotel.name} className="w-full sm:w-56 h-40 object-cover rounded-lg flex-shrink-0" />
           )}
           <div className="flex-1 min-w-0 space-y-2">
-            <div className="flex items-start justify-between">
-              <div>
-                <h3 className="font-semibold text-lg">{hotel.name}</h3>
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                <h3 className="font-semibold text-base sm:text-lg truncate">{hotel.name}</h3>
                 <div className="flex items-center gap-1 mt-0.5">
                   {[...Array(hotel.stars || 0)].map((_, i) => (
                     <Star key={i} size={11} className="fill-amber-500 text-amber-700" />
@@ -467,35 +487,35 @@ function HotelExpandedDetail({ hotel, destination }) {
         </div>
 
         {/* Contact details */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
           {hotel.address && (
             <a href={getMapsUrl(hotel.address || hotel.name + ' ' + destination)} target="_blank" rel="noopener noreferrer"
                className="flex items-center gap-1.5 text-xs text-gray-700 hover:text-blue-600 p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] transition-colors">
-              <MapPin size={11} className="text-blue-600 flex-shrink-0" /> <span className="truncate">{hotel.address}</span>
+              📍 <span className="truncate">{hotel.address}</span>
             </a>
           )}
           {hotel.contact_phone && (
             <a href={`tel:${hotel.contact_phone}`} className="flex items-center gap-1.5 text-xs text-gray-700 hover:text-blue-600 p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] transition-colors">
-              <Phone size={11} className="text-blue-600 flex-shrink-0" /> {hotel.contact_phone}
+              📞 {hotel.contact_phone}
             </a>
           )}
           {hotel.contact_email && (
             <a href={`mailto:${hotel.contact_email}`} className="flex items-center gap-1.5 text-xs text-gray-700 hover:text-blue-600 p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] transition-colors">
-              <Mail size={11} className="text-blue-600 flex-shrink-0" /> <span className="truncate">{hotel.contact_email}</span>
+              ✉️ <span className="truncate">{hotel.contact_email}</span>
             </a>
           )}
           {hotel.website && (
             <a href={hotel.website.startsWith('http') ? hotel.website : `https://${hotel.website}`} target="_blank" rel="noopener noreferrer"
                className="flex items-center gap-1.5 text-xs text-gray-700 hover:text-blue-600 p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] transition-colors">
-              <Globe2 size={11} className="text-blue-600 flex-shrink-0" /> Website
+              🌐 Website
             </a>
           )}
         </div>
 
         {(hotel.checkin_time || hotel.checkout_time) && (
-          <div className="flex items-center gap-4 text-xs text-gray-700">
-            {hotel.checkin_time && <span className="flex items-center gap-1"><DoorOpen size={10} className="text-green-700" /> Check-in: <strong className="text-gray-700">{hotel.checkin_time}</strong></span>}
-            {hotel.checkout_time && <span className="flex items-center gap-1"><DoorOpen size={10} className="text-red-600" /> Check-out: <strong className="text-gray-700">{hotel.checkout_time}</strong></span>}
+          <div className="flex items-center gap-3 sm:gap-4 text-xs text-gray-700 flex-wrap">
+            {hotel.checkin_time && <span className="flex items-center gap-1">🟢 Check-in: <strong className="text-gray-700">{hotel.checkin_time}</strong></span>}
+            {hotel.checkout_time && <span className="flex items-center gap-1">🔴 Check-out: <strong className="text-gray-700">{hotel.checkout_time}</strong></span>}
           </div>
         )}
 
@@ -503,9 +523,9 @@ function HotelExpandedDetail({ hotel, destination }) {
         {platforms.length > 0 && (
           <div className="space-y-2">
             <p className="text-xs font-semibold text-gray-700 uppercase tracking-wider flex items-center gap-1">
-              <Bookmark size={10} /> Book on — Compare prices
+              🏷️ Book on — Compare prices
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
               {platforms.map((p, i) => {
                 const pc = PLATFORM_COLORS[p.platform] || { bg: 'bg-gray-100', text: 'text-gray-700', border: 'border-gray-200' }
                 const url = p.url_hint || getBookingUrl(p.platform, hotel.name, destination)
@@ -700,23 +720,23 @@ function DayView({ day, destination, onNavigate }) {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      className="p-6 space-y-6"
+      className="p-3 sm:p-6 space-y-4 sm:space-y-6"
     >
       {/* Day header */}
-      <div className="flex items-center gap-4">
-        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center font-display font-bold text-xl text-white">
+      <div className="flex items-center gap-3 sm:gap-4">
+        <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center font-display font-bold text-base sm:text-xl text-white flex-shrink-0">
           {day.day}
         </div>
-        <div className="flex-1">
-          <h2 className="font-display text-2xl font-bold">{day.theme}</h2>
-          <div className="flex items-center gap-3 mt-1">
+        <div className="flex-1 min-w-0">
+          <h2 className="font-display text-lg sm:text-2xl font-bold truncate">{day.theme}</h2>
+          <div className="flex items-center gap-2 sm:gap-3 mt-0.5 sm:mt-1 flex-wrap">
             {day.weather_note && (
               <span className="flex items-center gap-1 text-xs text-gray-700">
-                <Cloud size={12} /> {day.weather_note}
+                ☁️ {day.weather_note}
               </span>
             )}
             {day.day_total_inr && (
-              <span className="font-mono text-sm text-green-700 font-semibold">
+              <span className="font-mono text-xs sm:text-sm text-green-700 font-semibold">
                 &#8377;{day.day_total_inr.toLocaleString('en-IN')}
               </span>
             )}
@@ -725,32 +745,32 @@ function DayView({ day, destination, onNavigate }) {
       </div>
 
       {/* Quick action shortcuts */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-1.5 sm:gap-2">
         <button
           onClick={() => onNavigate?.('flights')}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold hover:bg-blue-100 transition-all"
+          className="flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold hover:bg-blue-100 transition-all"
         >
-          ✈️ Flights
+          ✈️ <span className="hidden xs:inline">Flights</span>
         </button>
         <button
           onClick={() => onNavigate?.('trains')}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-green-50 border border-green-200 text-green-700 text-xs font-bold hover:bg-green-100 transition-all"
+          className="flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-green-50 border border-green-200 text-green-700 text-xs font-bold hover:bg-green-100 transition-all"
         >
-          🚂 Trains
+          🚂 <span className="hidden xs:inline">Trains</span>
         </button>
         <button
           onClick={() => onNavigate?.('map')}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold hover:bg-emerald-100 transition-all"
+          className="flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold hover:bg-emerald-100 transition-all"
         >
-          📍 View on Map
+          📍 <span className="hidden xs:inline">Map</span>
         </button>
         <a
           href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(day.theme + ' ' + destination)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 border border-gray-200 text-gray-700 text-xs font-bold hover:bg-gray-100 transition-all"
+          className="flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-gray-50 border border-gray-200 text-gray-700 text-xs font-bold hover:bg-gray-100 transition-all"
         >
-          🗺️ Google Maps
+          🗺️ <span className="hidden xs:inline">Google Maps</span>
         </a>
       </div>
 
@@ -795,12 +815,12 @@ function DayView({ day, destination, onNavigate }) {
           <div className="space-y-3">
             {day.activities.map((act, i) => (
               <div key={i} className="rounded-xl overflow-hidden border border-gray-200 hover:border-blue-600/20 transition-colors">
-                <div className="flex">
+                <div className="flex flex-col sm:flex-row">
                   {act.photo_url && (
                     <img src={act.photo_url} alt={act.name}
-                         className="w-40 h-32 object-cover flex-shrink-0" />
+                         className="w-full sm:w-40 h-36 sm:h-32 object-cover flex-shrink-0" />
                   )}
-                  <div className="p-4 flex-1 min-w-0">
+                  <div className="p-3 sm:p-4 flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-sm">{TIME_EMOJI[act.time_slot] || '📍'}</span>
                       <span className="text-xs uppercase tracking-wider text-gray-700 font-semibold">{act.time_slot}</span>
@@ -815,15 +835,15 @@ function DayView({ day, destination, onNavigate }) {
                     </div>
                     <h4 className="font-semibold text-base">{act.name}</h4>
                     <p className="text-xs text-gray-700 mt-0.5 line-clamp-2">{act.description}</p>
-                    <div className="flex items-center gap-4 mt-2">
+                    <div className="flex items-center gap-2 sm:gap-4 mt-2 flex-wrap">
                       <RatingBadge rating={act.rating} reviews={act.review_count} />
-                      <span className="flex items-center gap-1 text-xs text-gray-700"><Clock size={10} /> {act.duration_hours}h</span>
+                      <span className="flex items-center gap-1 text-xs text-gray-700">🕐 {act.duration_hours}h</span>
                       <span className="font-mono text-xs text-green-700 font-semibold">&#8377;{act.cost_inr?.toLocaleString('en-IN')}</span>
                       {act.maps_query && (
                         <a href={getMapsUrl(act.maps_query)}
                            target="_blank" rel="noopener noreferrer"
                            className="flex items-center gap-1 text-xs text-blue-600 hover:underline">
-                          <MapPin size={10} /> Maps <ExternalLink size={8} />
+                          📍 Maps 🔗
                         </a>
                       )}
                     </div>
