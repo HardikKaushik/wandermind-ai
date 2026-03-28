@@ -22,8 +22,8 @@ export default function SharedTrip() {
   if (loading) return <LoadingState text="Loading shared trip..." />
   if (error) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
-        <p className="text-gray-700 mb-4">{error}</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-slate-900">
+        <p className="text-gray-700 dark:text-slate-300 mb-4">{error}</p>
         <Link to="/" className="text-blue-600 hover:underline text-sm">
           Go to WanderMind
         </Link>
@@ -35,8 +35,8 @@ export default function SharedTrip() {
   if (!itinerary) return null
 
   return (
-    <div className="min-h-screen bg-white">
-      <nav className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+    <div className="min-h-screen bg-white dark:bg-slate-900">
+      <nav className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-slate-700">
         <Link to="/" className="flex items-center gap-2 text-gray-700 hover:text-white">
           <ArrowLeft size={16} />
           <span className="text-2xl">🌍</span>

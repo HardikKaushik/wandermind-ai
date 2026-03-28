@@ -395,33 +395,33 @@ export default function ItineraryMap({ itinerary, activeDay, onSelectDay }) {
   return (
     <div className="relative h-full w-full flex flex-col">
       {/* Map */}
-      <div ref={mapRef} className="flex-1 rounded-xl overflow-hidden border border-gray-200" style={{ minHeight: 500 }} />
+      <div ref={mapRef} className="flex-1 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-700" style={{ minHeight: 500 }} />
 
       {/* Loading */}
       {loading && (
-        <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center rounded-xl z-[1000]">
+        <div className="absolute inset-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm flex items-center justify-center rounded-xl z-[1000]">
           <div className="flex flex-col items-center gap-3">
             <Loader2 size={32} className="animate-spin text-blue-600" />
-            <p className="text-sm font-bold text-gray-800">Mapping your trip places...</p>
-            <p className="text-xs text-gray-500">Finding locations in {destinationName}</p>
+            <p className="text-sm font-bold text-gray-800 dark:text-slate-200">Mapping your trip places...</p>
+            <p className="text-xs text-gray-500 dark:text-slate-400">Finding locations in {destinationName}</p>
           </div>
         </div>
       )}
 
       {/* Error */}
       {error && (
-        <div className="absolute inset-0 bg-white/90 flex items-center justify-center rounded-xl z-[1000]">
+        <div className="absolute inset-0 bg-white/90 dark:bg-slate-900/90 flex items-center justify-center rounded-xl z-[1000]">
           <div className="flex flex-col items-center gap-2 px-6">
             <AlertCircle size={28} className="text-red-500" />
-            <p className="text-sm font-bold text-gray-800">{error}</p>
+            <p className="text-sm font-bold text-gray-800 dark:text-slate-200">{error}</p>
           </div>
         </div>
       )}
 
       {/* Legend - top left on desktop, bottom left on mobile */}
-      <div className="absolute top-3 left-3 z-[400] bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden hidden sm:block" style={{ maxWidth: 220 }}>
-        <div className="px-3 py-2 bg-gray-50 border-b border-gray-200">
-          <p className="text-xs font-extrabold text-gray-900 uppercase tracking-wider">📍 Places by Day</p>
+      <div className="absolute top-3 left-3 z-[400] bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 shadow-lg overflow-hidden hidden sm:block" style={{ maxWidth: 220 }}>
+        <div className="px-3 py-2 bg-gray-50 dark:bg-slate-700 border-b border-gray-200 dark:border-slate-600">
+          <p className="text-xs font-extrabold text-gray-900 dark:text-slate-100 uppercase tracking-wider">📍 Places by Day</p>
         </div>
         <div className="p-2 space-y-0.5 max-h-[300px] overflow-y-auto">
           {(itinerary?.days || []).map((day, idx) => {
@@ -432,7 +432,7 @@ export default function ItineraryMap({ itinerary, activeDay, onSelectDay }) {
                 key={day.day}
                 onClick={() => onSelectDay?.(day.day)}
                 className={`flex items-center gap-2 w-full text-left px-2.5 py-2 rounded-lg text-xs transition-all ${
-                  activeDay === day.day ? 'bg-blue-50 ring-1 ring-blue-200' : 'hover:bg-gray-50'
+                  activeDay === day.day ? 'bg-blue-50 dark:bg-blue-900/30 ring-1 ring-blue-200 dark:ring-blue-800' : 'hover:bg-gray-50 dark:hover:bg-slate-700'
                 }`}
               >
                 <span
@@ -442,7 +442,7 @@ export default function ItineraryMap({ itinerary, activeDay, onSelectDay }) {
                   {day.day}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <p className="truncate font-bold text-gray-900 text-[11px]">{day.theme}</p>
+                  <p className="truncate font-bold text-gray-900 dark:text-slate-100 text-[11px]">{day.theme}</p>
                   <p className="text-[10px] text-gray-500">{dayMarkerCount} places</p>
                 </div>
               </button>
@@ -453,14 +453,14 @@ export default function ItineraryMap({ itinerary, activeDay, onSelectDay }) {
 
       {/* Stats bar - bottom left */}
       <div className="absolute bottom-3 left-3 z-[400] flex items-center gap-2">
-        <div className="bg-white rounded-lg border border-gray-200 shadow px-3 py-2 flex items-center gap-2">
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 shadow px-3 py-2 flex items-center gap-2">
           <MapPin size={14} className="text-blue-600" />
-          <span className="text-xs font-bold text-gray-900">{markers.length} places</span>
-          <span className="text-xs text-gray-500">across {itinerary?.days?.length || 0} days</span>
+          <span className="text-xs font-bold text-gray-900 dark:text-slate-100">{markers.length} places</span>
+          <span className="text-xs text-gray-500 dark:text-slate-400">across {itinerary?.days?.length || 0} days</span>
         </div>
         <button
           onClick={handleResetView}
-          className="bg-white rounded-lg border border-gray-200 shadow px-3 py-2 flex items-center gap-1.5 hover:bg-gray-50 transition-colors"
+          className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 shadow px-3 py-2 flex items-center gap-1.5 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
           title="Show all places"
         >
           <Maximize2 size={13} className="text-gray-700" />

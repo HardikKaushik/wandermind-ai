@@ -13,11 +13,11 @@ export default function ItineraryPanel({ onQuickEdit }) {
   if (!itinerary || !itinerary.days) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center px-8 py-12">
-        <Map size={48} className="text-gray-700 mb-4" />
-        <h3 className="font-display text-lg font-semibold text-gray-700 mb-2">
+        <Map size={48} className="text-gray-700 dark:text-slate-500 mb-4" />
+        <h3 className="font-display text-lg font-semibold text-gray-700 dark:text-slate-300 mb-2">
           Your Itinerary
         </h3>
-        <p className="text-sm text-gray-700 max-w-xs">
+        <p className="text-sm text-gray-700 dark:text-slate-400 max-w-xs">
           Start chatting to create your travel plan. Your day-by-day itinerary
           will appear here with hotels, activities, and more.
         </p>
@@ -32,7 +32,7 @@ export default function ItineraryPanel({ onQuickEdit }) {
         <h2 className="font-display text-xl font-bold gradient-text">
           {itinerary.destination}
         </h2>
-        <p className="text-xs text-gray-700 mt-1">{itinerary.summary}</p>
+        <p className="text-xs text-gray-700 dark:text-slate-400 mt-1">{itinerary.summary}</p>
         {itinerary.travel_style && (
           <div className="flex justify-center gap-1.5 mt-2">
             {itinerary.travel_style.map((s, i) => (
@@ -78,7 +78,7 @@ export default function ItineraryPanel({ onQuickEdit }) {
             className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
               activeDay === day.day
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-100'
+                : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-600'
             }`}
           >
             Day {day.day}

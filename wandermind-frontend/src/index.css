@@ -17,6 +17,21 @@
   --shadow-glow: 0 4px 24px rgba(59, 130, 246, 0.10);
 }
 
+.dark {
+  --bg-primary: #0F172A;
+  --bg-secondary: #1E293B;
+  --bg-glass: rgba(59, 130, 246, 0.08);
+  --accent-blue: #3B82F6;
+  --accent-deep: #60A5FA;
+  --accent-green: #22C55E;
+  --accent-red: #EF4444;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --border: rgba(255, 255, 255, 0.08);
+  --shadow-glow: 0 4px 24px rgba(59, 130, 246, 0.15);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -44,13 +59,31 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
+.dark .glass {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
 .glass-hover:hover {
   background: rgba(59, 130, 246, 0.06);
   border-color: rgba(59, 130, 246, 0.20);
 }
 
+.dark .glass-hover:hover {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.30);
+}
+
 .gradient-text {
   background: linear-gradient(135deg, #3B82F6, #1E40AF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dark .gradient-text {
+  background: linear-gradient(135deg, #60A5FA, #3B82F6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -94,6 +127,10 @@ body {
   padding: 0 !important;
   overflow: hidden;
 }
+.dark .wandermind-popup .leaflet-popup-content-wrapper {
+  background: #1E293B !important;
+  border: 1px solid #334155 !important;
+}
 .wandermind-popup .leaflet-popup-content {
   margin: 0 !important;
   width: auto !important;
@@ -119,4 +156,15 @@ body {
   box-shadow: 0 8px 32px rgba(0,0,0,0.18) !important;
   border: 1px solid #E2E8F0 !important;
 }
+.dark .leaflet-popup-content-wrapper {
+  background: #1E293B !important;
+  border: 1px solid #334155 !important;
+  color: #F1F5F9 !important;
+}
 .leaflet-popup-tip { border-top-color: white !important; }
+.dark .leaflet-popup-tip { border-top-color: #1E293B !important; }
+
+/* Dark mode transitions */
+body, .glass, .gradient-text {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}

@@ -47,7 +47,7 @@ export default function ChatWindow({ onViewItinerary }) {
             <h2 className="font-display text-2xl font-bold gradient-text mb-2">
               WanderMind AI
             </h2>
-            <p className="text-gray-700 text-sm max-w-md">
+            <p className="text-gray-700 dark:text-slate-400 text-sm max-w-md">
               Your AI travel concierge. Tell me where you want to go, your budget,
               and travel dates — I'll create the perfect itinerary.
             </p>

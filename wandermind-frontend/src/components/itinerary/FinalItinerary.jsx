@@ -110,7 +110,7 @@ export default function FinalItinerary({ onClose }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-white/95 backdrop-blur-md"
+      className="fixed inset-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md"
     >
       <motion.div
         initial={{ y: 40, opacity: 0 }}
@@ -119,12 +119,12 @@ export default function FinalItinerary({ onClose }) {
         className="h-full flex flex-col"
       >
         {/* ─── TOP BAR ─── */}
-        <header className="flex items-center justify-between px-3 sm:px-6 py-2.5 border-b border-gray-200 flex-shrink-0 gap-2">
+        <header className="flex items-center justify-between px-3 sm:px-6 py-2.5 border-b border-gray-200 dark:border-slate-700 flex-shrink-0 gap-2">
           <div className="flex items-center gap-2 min-w-0">
             {/* Mobile hamburger for sidebar */}
             <button
               onClick={() => setMobileSidebar(!mobileSidebar)}
-              className="md:hidden p-1.5 rounded-lg hover:bg-gray-100 text-gray-700 flex-shrink-0"
+              className="md:hidden p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-slate-300 flex-shrink-0"
             >
               <span className="text-lg">☰</span>
             </button>
@@ -133,7 +133,7 @@ export default function FinalItinerary({ onClose }) {
               <h1 className="font-display text-sm sm:text-lg font-bold gradient-text truncate">
                 {itinerary.destination}, {itinerary.country}
               </h1>
-              <p className="text-xs sm:text-sm text-gray-700 truncate">
+              <p className="text-xs sm:text-sm text-gray-700 dark:text-slate-400 truncate">
                 {itinerary.total_days} days
                 {itinerary.travel_dates?.start && ` · ${itinerary.travel_dates.start} to ${itinerary.travel_dates.end}`}
               </p>
@@ -154,14 +154,14 @@ export default function FinalItinerary({ onClose }) {
             <button onClick={handleCopy} className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs bg-gray-100 text-gray-700 hover:bg-gray-100 transition-colors">
               <Copy size={12} />
             </button>
-            <button onClick={onClose} className="p-1.5 sm:p-2 rounded-lg hover:bg-gray-100 text-gray-700">
+            <button onClick={onClose} className="p-1.5 sm:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-slate-300">
               <X size={18} />
             </button>
           </div>
         </header>
 
         {/* ─── MAIN CONTENT ─── */}
-        <div id="final-itinerary-content" className="flex-1 flex overflow-hidden relative" style={{ background: '#FFFFFF', color: '#1E293B' }}>
+        <div id="final-itinerary-content" className="flex-1 flex overflow-hidden relative bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100">
 
           {/* Mobile sidebar overlay */}
           {mobileSidebar && (
@@ -174,12 +174,12 @@ export default function FinalItinerary({ onClose }) {
             md:translate-x-0 transition-transform duration-300
             fixed md:relative z-[60] md:z-auto
             w-72 md:w-64 h-full
-            border-r border-gray-200 flex flex-col flex-shrink-0 overflow-y-auto
-            bg-white shadow-2xl md:shadow-none
+            border-r border-gray-200 dark:border-slate-700 flex flex-col flex-shrink-0 overflow-y-auto
+            bg-white dark:bg-slate-900 shadow-2xl md:shadow-none
           `}>
             {/* Trip summary card */}
-            <div className="p-4 border-b border-gray-200">
-              <p className="text-sm text-gray-700 mb-2">{itinerary.summary}</p>
+            <div className="p-4 border-b border-gray-200 dark:border-slate-700">
+              <p className="text-sm text-gray-700 dark:text-slate-300 mb-2">{itinerary.summary}</p>
               {itinerary.travel_style?.length > 0 && (
                 <div className="flex flex-wrap gap-1">
                   {itinerary.travel_style.map((s, i) => (
@@ -192,13 +192,13 @@ export default function FinalItinerary({ onClose }) {
             </div>
 
             {/* Budget overview */}
-            <div className="p-4 border-b border-gray-200 space-y-2">
-              <p className="text-xs font-semibold text-gray-700 uppercase tracking-wider">Budget</p>
+            <div className="p-4 border-b border-gray-200 dark:border-slate-700 space-y-2">
+              <p className="text-xs font-semibold text-gray-700 dark:text-slate-400 uppercase tracking-wider">Budget</p>
               <div className="flex justify-between text-xs">
                 <span className="text-gray-700">&#8377;{usedBudget.toLocaleString('en-IN')}</span>
                 <span className="font-mono font-semibold">&#8377;{budget.total_inr?.toLocaleString('en-IN')}</span>
               </div>
-              <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div className="h-2 bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden">
                 <div className={`h-full rounded-full transition-all ${budgetPct > 90 ? 'bg-red-500' : budgetPct > 70 ? 'bg-amber-400' : 'bg-green-500'}`}
                      style={{ width: `${Math.min(budgetPct, 100)}%` }} />
               </div>
@@ -220,7 +220,7 @@ export default function FinalItinerary({ onClose }) {
                       </div>
                     )
                   })}
-                  <div className="flex justify-between text-xs pt-1 border-t border-gray-200">
+                  <div className="flex justify-between text-xs pt-1 border-t border-gray-200 dark:border-slate-700">
                     <span className="text-green-700 font-semibold">Remaining</span>
                     <span className="font-mono text-green-700 font-semibold">&#8377;{(budget.remaining_inr || 0).toLocaleString('en-IN')}</span>
                   </div>
@@ -230,22 +230,22 @@ export default function FinalItinerary({ onClose }) {
 
             {/* Day selector */}
             <div className="p-4 space-y-1.5 flex-1">
-              <p className="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-2">Days</p>
+              <p className="text-xs font-semibold text-gray-700 dark:text-slate-400 uppercase tracking-wider mb-2">Days</p>
               {days.map((day) => (
                 <button
                   key={day.day}
                   onClick={() => { setActiveDay(day.day); setTab('itinerary'); setMobileSidebar(false); }}
                   className={`w-full text-left px-3 py-2.5 rounded-lg transition-all text-xs ${
                     activeDay === day.day && tab === 'itinerary'
-                      ? 'bg-blue-50 border border-blue-200 text-blue-700'
-                      : 'hover:bg-gray-100 text-gray-700'
+                      ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400'
+                      : 'hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-slate-300'
                   }`}
                 >
                   <div className="flex items-center gap-2">
                     <span className={`w-6 h-6 rounded-md flex items-center justify-center text-xs font-bold ${
                       activeDay === day.day && tab === 'itinerary'
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 text-gray-700'
+                        : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300'
                     }`}>{day.day}</span>
                     <div className="flex-1 min-w-0">
                       <p className="truncate font-medium">{day.theme}</p>
@@ -258,11 +258,11 @@ export default function FinalItinerary({ onClose }) {
               ))}
 
               {/* Extra tabs */}
-              <div className="pt-3 mt-3 border-t border-gray-200 space-y-1.5">
+              <div className="pt-3 mt-3 border-t border-gray-200 dark:border-slate-700 space-y-1.5">
                 <button
                   onClick={() => { setTab('map'); setMobileSidebar(false); }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all flex items-center gap-2 ${
-                    tab === 'map' ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'hover:bg-gray-100 text-gray-700'
+                    tab === 'map' ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400' : 'hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-slate-300'
                   }`}
                 >
                   <MapPin size={14} /> Trip Map & Routes
@@ -270,7 +270,7 @@ export default function FinalItinerary({ onClose }) {
                 <button
                   onClick={() => { setTab('flights'); setMobileSidebar(false); }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all flex items-center gap-2 ${
-                    tab === 'flights' ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'hover:bg-gray-100 text-gray-700'
+                    tab === 'flights' ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400' : 'hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-slate-300'
                   }`}
                 >
                   ✈️ Search Flights
@@ -278,7 +278,7 @@ export default function FinalItinerary({ onClose }) {
                 <button
                   onClick={() => { setTab('trains'); setMobileSidebar(false); }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all flex items-center gap-2 ${
-                    tab === 'trains' ? 'bg-green-50 border border-green-200 text-green-700' : 'hover:bg-gray-100 text-gray-700'
+                    tab === 'trains' ? 'bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400' : 'hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-slate-300'
                   }`}
                 >
                   🚂 Search Trains
@@ -286,7 +286,7 @@ export default function FinalItinerary({ onClose }) {
                 <button
                   onClick={() => { setTab('essentials'); setMobileSidebar(false); }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all flex items-center gap-2 ${
-                    tab === 'essentials' ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'hover:bg-gray-100 text-gray-700'
+                    tab === 'essentials' ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400' : 'hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-slate-300'
                   }`}
                 >
                   <Globe size={14} /> Travel Essentials
@@ -294,7 +294,7 @@ export default function FinalItinerary({ onClose }) {
                 <button
                   onClick={() => { setTab('packing'); setMobileSidebar(false); }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-all flex items-center gap-2 ${
-                    tab === 'packing' ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'hover:bg-gray-100 text-gray-700'
+                    tab === 'packing' ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400' : 'hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-slate-300'
                   }`}
                 >
                   <Luggage size={14} /> Packing List
@@ -360,16 +360,16 @@ export default function FinalItinerary({ onClose }) {
         </div>
 
         {/* ─── BOTTOM BAR ─── */}
-        <footer className="flex items-center justify-between px-3 sm:px-6 py-2 sm:py-2.5 border-t border-gray-200 flex-shrink-0 gap-2">
-          <button onClick={onClose} className="flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors flex-shrink-0">
+        <footer className="flex items-center justify-between px-3 sm:px-6 py-2 sm:py-2.5 border-t border-gray-200 dark:border-slate-700 flex-shrink-0 gap-2">
+          <button onClick={onClose} className="flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors flex-shrink-0">
             ✏️ <span className="hidden sm:inline">Continue Editing</span><span className="sm:hidden">Edit</span>
           </button>
-          <p className="text-xs text-gray-500 hidden sm:block truncate">
+          <p className="text-xs text-gray-500 dark:text-slate-400 hidden sm:block truncate">
             {shareUrl || 'Created with WanderMind AI'}
           </p>
           <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
             {activeDay > 1 && tab === 'itinerary' && (
-              <button onClick={() => setActiveDay(activeDay - 1)} className="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs bg-gray-100 text-gray-700 hover:bg-gray-200">
+              <button onClick={() => setActiveDay(activeDay - 1)} className="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700">
                 &larr; <span className="hidden sm:inline">Day </span>{activeDay - 1}
               </button>
             )}

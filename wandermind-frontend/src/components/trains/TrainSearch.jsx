@@ -125,17 +125,17 @@ export default function TrainSearch({ destination }) {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-5">
       {/* Search Form */}
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm p-5">
         <div className="flex items-center gap-2 mb-4">
           🚂
-          <h3 className="font-extrabold text-lg text-gray-900">Search Trains</h3>
+          <h3 className="font-extrabold text-lg text-gray-900 dark:text-slate-100">Search Trains</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
           {/* From Station */}
           <div className="relative">
-            <label className="text-xs font-bold text-gray-600 uppercase tracking-wider mb-1 block">From Station</label>
-            <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus-within:border-green-400 focus-within:ring-2 focus-within:ring-green-100">
+            <label className="text-xs font-bold text-gray-600 dark:text-slate-400 uppercase tracking-wider mb-1 block">From Station</label>
+            <div className="flex items-center gap-2 border border-gray-200 dark:border-slate-600 rounded-xl px-3 py-2.5 bg-gray-50 dark:bg-slate-700 focus-within:border-green-400 focus-within:ring-2 focus-within:ring-green-100 dark:focus-within:ring-green-900/30">
               📍
               <input
                 type="text"
@@ -143,7 +143,7 @@ export default function TrainSearch({ destination }) {
                 onChange={(e) => { setFromQuery(e.target.value); setSelectedFrom(null) }}
                 onFocus={() => fromQuery.length >= 2 && setShowFromDrop(true)}
                 placeholder="City or station code..."
-                className="flex-1 bg-transparent text-sm font-semibold text-gray-900 outline-none placeholder:text-gray-400"
+                className="flex-1 bg-transparent text-sm font-semibold text-gray-900 dark:text-slate-100 outline-none placeholder:text-gray-400 dark:placeholder:text-slate-500"
               />
               {selectedFrom && (
                 <button onClick={() => { setSelectedFrom(null); setFromQuery('') }} className="text-gray-400 hover:text-gray-600"><X size={14} /></button>
@@ -152,12 +152,12 @@ export default function TrainSearch({ destination }) {
             <AnimatePresence>
               {showFromDrop && fromStations.length > 0 && !selectedFrom && (
                 <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
-                  className="absolute z-50 top-full mt-1 w-full bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden max-h-48 overflow-y-auto">
+                  className="absolute z-50 top-full mt-1 w-full bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 shadow-lg overflow-hidden max-h-48 overflow-y-auto">
                   {fromStations.map((s, i) => (
                     <button key={i} onClick={() => { setSelectedFrom(s); setShowFromDrop(false); setFromQuery(s.name) }}
-                      className="w-full text-left px-4 py-2.5 hover:bg-green-50 text-sm flex items-center gap-2 border-b border-gray-50 last:border-0">
+                      className="w-full text-left px-4 py-2.5 hover:bg-green-50 dark:hover:bg-slate-700 text-sm flex items-center gap-2 border-b border-gray-50 dark:border-slate-700 last:border-0">
                       <span className="font-mono font-bold text-green-700 text-xs">{s.code}</span>
-                      <span className="font-semibold text-gray-900">{s.name}</span>
+                      <span className="font-semibold text-gray-900 dark:text-slate-100">{s.name}</span>
                     </button>
                   ))}
                 </motion.div>
@@ -167,8 +167,8 @@ export default function TrainSearch({ destination }) {
 
           {/* To Station */}
           <div className="relative">
-            <label className="text-xs font-bold text-gray-600 uppercase tracking-wider mb-1 block">To Station</label>
-            <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 focus-within:border-green-400 focus-within:ring-2 focus-within:ring-green-100">
+            <label className="text-xs font-bold text-gray-600 dark:text-slate-400 uppercase tracking-wider mb-1 block">To Station</label>
+            <div className="flex items-center gap-2 border border-gray-200 dark:border-slate-600 rounded-xl px-3 py-2.5 bg-gray-50 dark:bg-slate-700 focus-within:border-green-400 focus-within:ring-2 focus-within:ring-green-100 dark:focus-within:ring-green-900/30">
               🚂
               <input
                 type="text"
@@ -176,7 +176,7 @@ export default function TrainSearch({ destination }) {
                 onChange={(e) => { setToQuery(e.target.value); setSelectedTo(null) }}
                 onFocus={() => toQuery.length >= 2 && setShowToDrop(true)}
                 placeholder="City or station code..."
-                className="flex-1 bg-transparent text-sm font-semibold text-gray-900 outline-none placeholder:text-gray-400"
+                className="flex-1 bg-transparent text-sm font-semibold text-gray-900 dark:text-slate-100 outline-none placeholder:text-gray-400 dark:placeholder:text-slate-500"
               />
               {selectedTo && (
                 <button onClick={() => { setSelectedTo(null); setToQuery('') }} className="text-gray-400 hover:text-gray-600"><X size={14} /></button>
@@ -185,12 +185,12 @@ export default function TrainSearch({ destination }) {
             <AnimatePresence>
               {showToDrop && toStations.length > 0 && !selectedTo && (
                 <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
-                  className="absolute z-50 top-full mt-1 w-full bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden max-h-48 overflow-y-auto">
+                  className="absolute z-50 top-full mt-1 w-full bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 shadow-lg overflow-hidden max-h-48 overflow-y-auto">
                   {toStations.map((s, i) => (
                     <button key={i} onClick={() => { setSelectedTo(s); setShowToDrop(false); setToQuery(s.name) }}
-                      className="w-full text-left px-4 py-2.5 hover:bg-green-50 text-sm flex items-center gap-2 border-b border-gray-50 last:border-0">
+                      className="w-full text-left px-4 py-2.5 hover:bg-green-50 dark:hover:bg-slate-700 text-sm flex items-center gap-2 border-b border-gray-50 dark:border-slate-700 last:border-0">
                       <span className="font-mono font-bold text-green-700 text-xs">{s.code}</span>
-                      <span className="font-semibold text-gray-900">{s.name}</span>
+                      <span className="font-semibold text-gray-900 dark:text-slate-100">{s.name}</span>
                     </button>
                   ))}
                 </motion.div>
@@ -201,9 +201,9 @@ export default function TrainSearch({ destination }) {
 
         <div className="flex gap-3 mb-4">
           <div className="flex-1">
-            <label className="text-xs font-bold text-gray-600 uppercase tracking-wider mb-1 block">Travel Date</label>
+            <label className="text-xs font-bold text-gray-600 dark:text-slate-400 uppercase tracking-wider mb-1 block">Travel Date</label>
             <input type="date" value={date} onChange={(e) => setDate(e.target.value)}
-              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50 text-sm font-semibold text-gray-900 focus:border-green-400 focus:ring-2 focus:ring-green-100 outline-none" />
+              className="w-full border border-gray-200 dark:border-slate-600 rounded-xl px-3 py-2.5 bg-gray-50 dark:bg-slate-700 text-sm font-semibold text-gray-900 dark:text-slate-100 focus:border-green-400 focus:ring-2 focus:ring-green-100 dark:focus:ring-green-900/30 outline-none" />
           </div>
           <div className="flex items-end">
             <button onClick={handleSearch} disabled={loading}
@@ -215,7 +215,7 @@ export default function TrainSearch({ destination }) {
         </div>
 
         {error && (
-          <div className="flex items-center gap-2 text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2">
+          <div className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm bg-red-50 dark:bg-red-900/20 rounded-lg px-3 py-2">
             ⚠️ {error}
           </div>
         )}
@@ -226,16 +226,16 @@ export default function TrainSearch({ destination }) {
         <>
           {/* Stats */}
           <div className="flex flex-wrap items-center gap-3">
-            <div className="bg-green-50 border border-green-200 rounded-xl px-4 py-2 flex items-center gap-2">
+            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl px-4 py-2 flex items-center gap-2">
               💰
-              <span className="text-sm font-bold text-green-800">Cheapest: {stats?.cheapest}</span>
+              <span className="text-sm font-bold text-green-800 dark:text-green-400">Cheapest: {stats?.cheapest}</span>
             </div>
-            <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-2 flex items-center gap-2">
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl px-4 py-2 flex items-center gap-2">
               ⚡
-              <span className="text-sm font-bold text-blue-800">Fastest: {stats?.fastest}</span>
+              <span className="text-sm font-bold text-blue-800 dark:text-blue-400">Fastest: {stats?.fastest}</span>
             </div>
-            <div className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2">
-              <span className="text-sm font-bold text-gray-700">{stats?.total} trains found</span>
+            <div className="bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-2">
+              <span className="text-sm font-bold text-gray-700 dark:text-slate-300">{stats?.total} trains found</span>
             </div>
           </div>
 
@@ -243,12 +243,12 @@ export default function TrainSearch({ destination }) {
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs font-bold text-gray-500 uppercase">Type:</span>
             <button onClick={() => setFilterType('all')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold ${filterType === 'all' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold ${filterType === 'all' ? 'bg-green-600 text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700'}`}>
               All ({trains.length})
             </button>
             {trainTypes.map(t => (
               <button key={t} onClick={() => setFilterType(t)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold ${filterType === t ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold ${filterType === t ? 'bg-green-600 text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700'}`}>
                 {t}
               </button>
             ))}
@@ -256,7 +256,7 @@ export default function TrainSearch({ destination }) {
             <span className="ml-3 text-xs font-bold text-gray-500 uppercase">Sort:</span>
             {[{ v: 'price', l: '💰 Cheapest' }, { v: 'duration', l: '⚡ Fastest' }, { v: 'departure', l: '🕐 Earliest' }].map(s => (
               <button key={s.v} onClick={() => setSortBy(s.v)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 ${sortBy === s.v ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 ${sortBy === s.v ? 'bg-green-600 text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700'}`}>
                 {s.l}
               </button>
             ))}
@@ -277,7 +277,7 @@ export default function TrainSearch({ destination }) {
       {loading && (
         <div className="flex flex-col items-center py-12 gap-3">
           <Loader2 size={32} className="animate-spin text-green-600" />
-          <p className="text-sm font-bold text-gray-700">Searching trains...</p>
+          <p className="text-sm font-bold text-gray-700 dark:text-slate-300">Searching trains...</p>
         </div>
       )}
     </motion.div>
@@ -292,14 +292,14 @@ function TrainCard({ train, date, isExpanded, onToggle, isCheapest }) {
 
   return (
     <motion.div layout
-      className={`bg-white rounded-xl border overflow-hidden transition-all ${
-        isExpanded ? 'border-green-300 shadow-md ring-1 ring-green-100' : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'
+      className={`bg-white dark:bg-slate-800 rounded-xl border overflow-hidden transition-all ${
+        isExpanded ? 'border-green-300 dark:border-green-600 shadow-md ring-1 ring-green-100 dark:ring-green-900/30' : 'border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 hover:shadow-sm'
       }`}>
       <button onClick={onToggle} className="w-full text-left p-3">
         <div className="flex items-center gap-3">
           {/* Train info */}
           <div className="min-w-0 flex-shrink-0" style={{ width: 90 }}>
-            <p className="text-xs font-extrabold text-gray-900 truncate">{train.train_name?.split(' ').slice(-2).join(' ')}</p>
+            <p className="text-xs font-extrabold text-gray-900 dark:text-slate-100 truncate">{train.train_name?.split(' ').slice(-2).join(' ')}</p>
             <p className="text-[10px] text-gray-500 font-mono">{train.train_number}</p>
             <span className={`inline-block text-[8px] px-1.5 py-0.5 rounded font-bold mt-0.5 ${badge.bg} ${badge.text}`}>
               {train.train_type}
@@ -308,7 +308,7 @@ function TrainCard({ train, date, isExpanded, onToggle, isCheapest }) {
 
           {/* Departure */}
           <div className="text-center flex-shrink-0">
-            <p className="text-sm font-extrabold text-gray-900">{train.departure}</p>
+            <p className="text-sm font-extrabold text-gray-900 dark:text-slate-100">{train.departure}</p>
             <p className="text-[10px] text-gray-500">{train.from_station?.code}</p>
           </div>
 
@@ -325,7 +325,7 @@ function TrainCard({ train, date, isExpanded, onToggle, isCheapest }) {
 
           {/* Arrival */}
           <div className="text-center flex-shrink-0">
-            <p className="text-sm font-extrabold text-gray-900">{train.arrival}</p>
+            <p className="text-sm font-extrabold text-gray-900 dark:text-slate-100">{train.arrival}</p>
             <p className="text-[10px] text-gray-500">{train.to_station?.code}</p>
           </div>
 
@@ -342,10 +342,10 @@ function TrainCard({ train, date, isExpanded, onToggle, isCheapest }) {
       <AnimatePresence>
         {isExpanded && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-            <div className="px-4 pb-4 border-t border-gray-100 space-y-3">
+            <div className="px-4 pb-4 border-t border-gray-100 dark:border-slate-700 space-y-3">
               {/* Run days */}
               <div className="flex items-center gap-2 mt-3">
-                <span className="text-[10px] text-gray-500 font-bold uppercase">Runs on:</span>
+                <span className="text-[10px] text-gray-500 dark:text-slate-400 font-bold uppercase">Runs on:</span>
                 {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d => (
                   <span key={d} className={`text-[9px] px-1.5 py-0.5 rounded font-bold ${
                     train.run_days?.includes(d) ? 'bg-green-100 text-green-700' : 'bg-gray-50 text-gray-300'
@@ -356,7 +356,7 @@ function TrainCard({ train, date, isExpanded, onToggle, isCheapest }) {
 
               {/* Class-wise prices */}
               <div>
-                <p className="text-[10px] text-gray-500 font-bold uppercase mb-2">Select Class & Check Availability:</p>
+                <p className="text-[10px] text-gray-500 dark:text-slate-400 font-bold uppercase mb-2">Select Class & Check Availability:</p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {train.classes?.map((cls, ci) => {
                     const c = CLASS_COLORS[cls.class_code] || { bg: 'bg-gray-100', text: 'text-gray-700', border: 'border-gray-200' }
@@ -371,7 +371,7 @@ function TrainCard({ train, date, isExpanded, onToggle, isCheapest }) {
                           {isSelected && <span>✅</span>}
                         </div>
                         <p className="text-[10px] text-gray-600 font-medium">{cls.class_name}</p>
-                        <p className="text-sm font-extrabold text-gray-900 mt-0.5">₹{cls.price_inr?.toLocaleString('en-IN')}</p>
+                        <p className="text-sm font-extrabold text-gray-900 dark:text-slate-100 mt-0.5">₹{cls.price_inr?.toLocaleString('en-IN')}</p>
                         <span className={`inline-block text-[8px] px-1.5 py-0.5 rounded font-bold mt-1 ${
                           cls.is_available ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'
                         }`}>
@@ -385,7 +385,7 @@ function TrainCard({ train, date, isExpanded, onToggle, isCheapest }) {
 
               {/* Booking buttons */}
               <div>
-                <p className="text-[10px] text-gray-500 font-bold uppercase mb-2">Book on:</p>
+                <p className="text-[10px] text-gray-500 dark:text-slate-400 font-bold uppercase mb-2">Book on:</p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   <a href={urls.irctc} target="_blank" rel="noopener noreferrer"
                     className="flex flex-col items-center rounded-xl py-2.5 px-3 bg-blue-600 hover:bg-blue-700 text-white transition-colors">

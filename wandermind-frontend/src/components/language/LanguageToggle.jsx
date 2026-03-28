@@ -11,7 +11,7 @@ export default function LanguageToggle() {
   const setLanguage = useTripStore((s) => s.setLanguage)
 
   return (
-    <div className="flex items-center rounded-full bg-gray-100 p-0.5" title="Response language">
+    <div className="flex items-center rounded-full bg-gray-100 dark:bg-slate-800 p-0.5" title="Response language">
       {LANGUAGES.map((lang) => (
         <button
           key={lang.code}
@@ -19,7 +19,7 @@ export default function LanguageToggle() {
           className={`px-2.5 py-1 rounded-full text-sm font-medium transition-all ${
             language === lang.code
               ? 'bg-blue-600 text-white'
-              : 'text-gray-700 hover:text-gray-700'
+              : 'text-gray-700 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
           }`}
         >
           {lang.label}

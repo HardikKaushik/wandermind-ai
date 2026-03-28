@@ -21,6 +21,8 @@ export default function Planner() {
   const location = useLocation()
   const navigate = useNavigate()
   const itinerary = useTripStore((s) => s.itinerary)
+  const theme = useTripStore((s) => s.theme)
+  const toggleTheme = useTripStore((s) => s.toggleTheme)
   const { sendMessage, startSession } = useChat()
 
   const [showFinal, setShowFinal] = useState(false)
@@ -84,14 +86,14 @@ export default function Planner() {
   }, [])
 
   return (
-    <div className="h-screen flex flex-col bg-white overflow-hidden">
+    <div className="h-screen flex flex-col bg-white dark:bg-slate-900 overflow-hidden">
       {/* Top navbar */}
-      <header className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200
-                         bg-white/90 backdrop-blur-xl z-20 flex-shrink-0">
+      <header className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 dark:border-slate-700
+                         bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl z-20 flex-shrink-0">
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/')}
-            className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-700"
+            className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-slate-300"
           >
             <ArrowLeft size={16} />
           </button>
@@ -106,12 +108,21 @@ export default function Planner() {
         <div className="flex items-center gap-2">
           <LanguageToggle />
 
+          {/* Theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 text-lg transition-colors"
+            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
+
           {/* Desktop panel toggles */}
           <div className="hidden lg:flex items-center gap-1">
             <button
               onClick={() => setLeftPanel(!leftPanel)}
               className={`p-1.5 rounded-lg transition-colors ${
-                leftPanel ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:text-gray-700'
+                leftPanel ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600' : 'text-gray-700 dark:text-slate-400 hover:text-gray-700'
               }`}
               title="Toggle info panel"
             >
@@ -120,7 +131,7 @@ export default function Planner() {
             <button
               onClick={() => setRightPanel(!rightPanel)}
               className={`p-1.5 rounded-lg transition-colors ${
-                rightPanel ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:text-gray-700'
+                rightPanel ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600' : 'text-gray-700 dark:text-slate-400 hover:text-gray-700'
               }`}
               title="Toggle itinerary panel"
             >
@@ -132,8 +143,8 @@ export default function Planner() {
           <button
             onClick={() => { setShowTransport(true); setTransportTab('flights') }}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold
-                       bg-white border border-blue-200 text-blue-700
-                       hover:bg-blue-50 hover:border-blue-400 transition-all"
+                       bg-white dark:bg-slate-800 border border-blue-200 dark:border-slate-600 text-blue-700 dark:text-blue-400
+                       hover:bg-blue-50 dark:hover:bg-slate-700 hover:border-blue-400 dark:hover:border-slate-500 transition-all"
           >
             <span className="hidden sm:inline">✈️ Flights / 🚂 Trains</span>
             <span className="sm:hidden">✈️🚂</span>
@@ -145,7 +156,7 @@ export default function Planner() {
               onClick={() => setShowFinal(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold
                          bg-blue-600 text-white
-                         hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200 transition-all"
+                         hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200 dark:hover:shadow-blue-900/40 transition-all"
             >
               <CheckCircle size={12} />
               <span className="hidden sm:inline">Finalize Trip</span>
@@ -167,7 +178,7 @@ export default function Planner() {
               animate={{ width: 320, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="hidden lg:flex flex-col border-r border-gray-200 overflow-hidden flex-shrink-0 bg-gray-50"
+              className="hidden lg:flex flex-col border-r border-gray-200 dark:border-slate-700 overflow-hidden flex-shrink-0 bg-gray-50 dark:bg-slate-800/50"
             >
               <TravelEssentials />
             </motion.aside>
@@ -175,7 +186,7 @@ export default function Planner() {
         </AnimatePresence>
 
         {/* Center: Chat */}
-        <main className={`flex-1 flex-col min-w-0 bg-white ${
+        <main className={`flex-1 flex-col min-w-0 bg-white dark:bg-slate-900 ${
           mobileTab === 'chat' ? 'flex' : 'hidden lg:flex'
         }`}>
           <ChatWindow
@@ -193,11 +204,11 @@ export default function Planner() {
               animate={{ width: 400, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className={`flex-col border-l border-gray-200 overflow-hidden flex-shrink-0 bg-gray-50 ${
+              className={`flex-col border-l border-gray-200 dark:border-slate-700 overflow-hidden flex-shrink-0 bg-gray-50 dark:bg-slate-800/50 ${
                 mobileTab === 'itinerary' ? 'flex' : 'hidden lg:flex'
               }`}
             >
-              <div className="flex-shrink-0 p-3 border-b border-gray-200">
+              <div className="flex-shrink-0 p-3 border-b border-gray-200 dark:border-slate-700">
                 <BudgetTracker onOptimize={handleBudgetOptimize} />
               </div>
               <div className="flex-1 overflow-hidden">
@@ -216,7 +227,7 @@ export default function Planner() {
       </div>
 
       {/* Mobile bottom tabs */}
-      <div className="lg:hidden flex items-center border-t border-gray-200 bg-white/95
+      <div className="lg:hidden flex items-center border-t border-gray-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95
                       backdrop-blur-xl flex-shrink-0">
         {[
           { key: 'chat', icon: MessageSquare, label: 'Chat' },
@@ -229,7 +240,7 @@ export default function Planner() {
             className={`flex-1 flex flex-col items-center gap-0.5 py-2.5 text-xs font-bold transition-colors ${
               mobileTab === tab.key
                 ? 'text-blue-600'
-                : 'text-gray-700'
+                : 'text-gray-700 dark:text-slate-400'
             }`}
           >
             <tab.icon size={18} />

@@ -10,16 +10,16 @@ function Accordion({ title, icon: Icon, children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen)
 
   return (
-    <div className="border-b border-gray-200 last:border-0">
+    <div className="border-b border-gray-200 dark:border-slate-700 last:border-0">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center gap-2 py-3 px-1 text-left hover:bg-white/[0.02] transition-colors"
+        className="w-full flex items-center gap-2 py-3 px-1 text-left hover:bg-white/[0.02] dark:hover:bg-slate-800/50 transition-colors"
       >
-        <Icon size={14} className="text-blue-600 flex-shrink-0" />
+        <Icon size={14} className="text-blue-600 dark:text-blue-400 flex-shrink-0" />
         <span className="text-xs font-semibold flex-1">{title}</span>
         <ChevronDown
           size={12}
-          className={`text-gray-700 transition-transform ${open ? 'rotate-180' : ''}`}
+          className={`text-gray-700 dark:text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`}
         />
       </button>
       <AnimatePresence>
@@ -31,7 +31,7 @@ function Accordion({ title, icon: Icon, children, defaultOpen = false }) {
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="pb-3 px-1 text-xs text-gray-700 leading-relaxed">
+            <div className="pb-3 px-1 text-xs text-gray-700 dark:text-slate-300 leading-relaxed">
               {children}
             </div>
           </motion.div>
@@ -47,8 +47,8 @@ export default function TravelEssentials() {
   if (!itinerary) {
     return (
       <div className="p-4 text-center">
-        <Luggage size={32} className="mx-auto text-gray-700 mb-3" />
-        <p className="text-sm text-gray-700">
+        <Luggage size={32} className="mx-auto text-gray-700 dark:text-slate-500 mb-3" />
+        <p className="text-sm text-gray-700 dark:text-slate-400">
           Travel tips and essentials will appear here once your itinerary is ready.
         </p>
       </div>

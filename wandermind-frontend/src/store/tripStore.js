@@ -11,6 +11,9 @@ export const useTripStore = create(
       activeDay: 1,
       viewMode: 'chat', // 'chat' | 'itinerary' | 'final'
       language: 'en',
+      theme: typeof window !== 'undefined'
+        ? localStorage.getItem('wandermind-theme') || 'light'
+        : 'light',
 
       setItinerary: (itinerary) => set({ itinerary }),
       setActiveDay: (day) => set({ activeDay: day }),
@@ -19,6 +22,16 @@ export const useTripStore = create(
       setViewMode: (mode) => set({ viewMode: mode }),
       setLanguage: (lang) => set({ language: lang }),
       setLoading: (loading) => set({ isLoading: loading }),
+      toggleTheme: () => {
+        const current = get().theme
+        const next = current === 'dark' ? 'light' : 'dark'
+        localStorage.setItem('wandermind-theme', next)
+        set({ theme: next })
+      },
+      setTheme: (theme) => {
+        localStorage.setItem('wandermind-theme', theme)
+        set({ theme })
+      },
 
       resetTrip: () =>
         set({

@@ -12,15 +12,16 @@ export default function FestivalAlert() {
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       className="mx-4 mt-2 p-3 rounded-lg bg-gradient-to-r from-amber-500/10 to-blue-600/10
-                 border border-amber-500/20"
+                 dark:from-amber-500/20 dark:to-blue-600/20
+                 border border-amber-500/20 dark:border-amber-500/30"
     >
       <div className="flex items-center gap-2">
         <span className="text-lg">🎉</span>
         <div>
-          <p className="text-xs font-semibold text-amber-700">
+          <p className="text-xs font-semibold text-amber-700 dark:text-amber-400">
             {festivals[0].name}
           </p>
-          <p className="text-xs text-gray-700">
+          <p className="text-xs text-gray-700 dark:text-slate-300">
             {festivals[0].date} {festivals[0].note && `— ${festivals[0].note}`}
           </p>
         </div>

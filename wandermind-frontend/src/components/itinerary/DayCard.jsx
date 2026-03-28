@@ -20,7 +20,7 @@ export default function DayCard({ day, destination, isActive, onToggle, onQuickE
       {/* Day header - always visible */}
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between p-4 hover:bg-white/[0.03] transition-colors"
+        className="w-full flex items-center justify-between p-4 hover:bg-white/[0.03] dark:hover:bg-slate-800/50 transition-colors"
       >
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700
@@ -29,16 +29,16 @@ export default function DayCard({ day, destination, isActive, onToggle, onQuickE
           </div>
           <div className="text-left">
             <h3 className="font-semibold text-sm">Day {day.day}</h3>
-            <p className="text-xs text-gray-700">{day.theme}</p>
+            <p className="text-xs text-gray-700 dark:text-slate-400">{day.theme}</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
           {day.day_total_inr && (
-            <span className="font-mono text-sm text-green-700">
+            <span className="font-mono text-sm text-green-700 dark:text-green-400">
               &#8377;{day.day_total_inr.toLocaleString('en-IN')}
             </span>
           )}
-          {isActive ? <ChevronUp size={16} className="text-gray-700" /> : <ChevronDown size={16} className="text-gray-700" />}
+          {isActive ? <ChevronUp size={16} className="text-gray-700 dark:text-slate-400" /> : <ChevronDown size={16} className="text-gray-700 dark:text-slate-400" />}
         </div>
       </button>
 

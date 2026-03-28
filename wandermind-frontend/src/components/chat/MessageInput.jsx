@@ -45,7 +45,7 @@ export default function MessageInput({ onSend, disabled, prefillText, onClearPre
   }, [text])
 
   return (
-    <div className="border-t border-gray-200 bg-white/90 backdrop-blur-xl">
+    <div className="border-t border-gray-200 dark:border-slate-700 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl">
       {/* Quick prompts */}
       {!disabled && !text && (
         <div className="flex gap-2 px-4 pt-3 overflow-x-auto no-scrollbar">
@@ -54,8 +54,8 @@ export default function MessageInput({ onSend, disabled, prefillText, onClearPre
               key={i}
               onClick={() => setText(prompt)}
               className="flex-shrink-0 text-xs px-3 py-1.5 rounded-full
-                         bg-gray-100 border border-gray-200 hover:bg-blue-50 hover:border-blue-300
-                         text-gray-700 hover:text-blue-700 transition-colors whitespace-nowrap font-bold"
+                         bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-slate-700 hover:border-blue-300 dark:hover:border-slate-500
+                         text-gray-700 dark:text-slate-300 hover:text-blue-700 dark:hover:text-blue-400 transition-colors whitespace-nowrap font-bold"
             >
               <Sparkles size={10} className="inline mr-1 text-blue-500" />
               {prompt}
@@ -73,9 +73,9 @@ export default function MessageInput({ onSend, disabled, prefillText, onClearPre
           placeholder="Plan your dream trip... (e.g., '4 din ka Goa trip, ₹45,000 budget')"
           rows={1}
           disabled={disabled}
-          className="flex-1 bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-sm font-medium
-                     text-gray-900 placeholder:text-gray-700 focus:outline-none focus:border-blue-500
-                     focus:ring-2 focus:ring-blue-100
+          className="flex-1 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-xl px-4 py-3 text-sm font-medium
+                     text-gray-900 dark:text-slate-100 placeholder:text-gray-700 dark:placeholder:text-slate-500 focus:outline-none focus:border-blue-500 dark:focus:border-blue-500
+                     focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30
                      resize-none transition-colors disabled:opacity-50"
         />
         <button
@@ -83,7 +83,7 @@ export default function MessageInput({ onSend, disabled, prefillText, onClearPre
           disabled={!text.trim() || disabled}
           className="p-3 rounded-xl bg-blue-600
                      text-white disabled:opacity-30 disabled:cursor-not-allowed
-                     hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200 transition-all
+                     hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200 dark:hover:shadow-blue-900/40 transition-all
                      active:scale-95 flex-shrink-0"
         >
           <Send size={18} />
